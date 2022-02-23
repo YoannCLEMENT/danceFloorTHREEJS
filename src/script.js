@@ -27,7 +27,7 @@ loader.load(
 	( error ) => { console.log( 'An error happened' ); }
 );
 loader.load(
-	'models/danceur_matthieu.glb',
+	'models/danceur.gltf',
 	(gltf) => {
         scene.add( gltf.scene );
         mixer = new THREE.AnimationMixer(gltf.scene)
