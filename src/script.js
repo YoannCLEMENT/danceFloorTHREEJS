@@ -2,6 +2,7 @@ import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 // Debug
 const gui = new dat.GUI()
@@ -12,25 +13,36 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
-// Objects
-const geometry = new THREE.TorusGeometry( .7, .2, 16, 100 );
+let texture = new THREE.Texture();
+let mixer = new THREE.AnimationMixer();
 
-// Materials
-
-const material = new THREE.MeshBasicMaterial()
-material.color = new THREE.Color(0xff0000)
-
-// Mesh
-const sphere = new THREE.Mesh(geometry,material)
-scene.add(sphere)
+// GLTFLoader
+const loader = new GLTFLoader();
+loader.load(
+	'models/kda_evelynn_dance_stage_moonlight_edition/scene.gltf',
+	(gltf) => {
+        gltf.scene.translateY( -15.4 );
+		scene.add( gltf.scene );
+	},
+	( xhr ) => { console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
+	( error ) => { console.log( 'An error happened' ); }
+);
+loader.load(
+	'models/danceur_matthieu.glb',
+	(gltf) => {
+        scene.add( gltf.scene );
+        mixer = new THREE.AnimationMixer(gltf.scene)
+        mixer.clipAction((gltf).animations[0]).play()
+	},
+	( xhr ) => { console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
+	( error ) => { console.log( 'An error happened' ); }
+);
 
 // Lights
-
-const pointLight = new THREE.PointLight(0xffffff, 0.1)
-pointLight.position.x = 2
-pointLight.position.y = 3
-pointLight.position.z = 4
-scene.add(pointLight)
+let light = new THREE.DirectionalLight(0xffffff, 1);
+light.position.setScalar(10);
+scene.add(light);
+scene.add(new THREE.AmbientLight(0xffffff, 0.5));
 
 /**
  * Sizes
@@ -60,14 +72,14 @@ window.addEventListener('resize', () =>
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = 0
-camera.position.y = 0
+camera.position.x = 6
+camera.position.y = 2
 camera.position.z = 2
 scene.add(camera)
 
 // Controls
-// const controls = new OrbitControls(camera, canvas)
-// controls.enableDamping = true
+const controls = new OrbitControls(camera, canvas)
+controls.enableDamping = true
 
 /**
  * Renderer
@@ -88,9 +100,6 @@ const tick = () =>
 {
 
     const elapsedTime = clock.getElapsedTime()
-
-    // Update objects
-    sphere.rotation.y = .5 * elapsedTime
 
     // Update Orbital Controls
     // controls.update()
