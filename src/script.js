@@ -13,7 +13,6 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
-let texture = new THREE.Texture();
 let mixer = new THREE.AnimationMixer();
 
 // GLTFLoader
@@ -33,6 +32,7 @@ loader.load(
         scene.add( gltf.scene );
         mixer = new THREE.AnimationMixer(gltf.scene)
         mixer.clipAction((gltf).animations[0]).play()
+        animate()
 	},
 	( xhr ) => { console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
 	( error ) => { console.log( 'An error happened' ); }
@@ -96,19 +96,14 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 const clock = new THREE.Clock()
 
-const tick = () =>
-{
+function animate() {
 
-    const elapsedTime = clock.getElapsedTime()
+    requestAnimationFrame( animate );
 
-    // Update Orbital Controls
-    // controls.update()
+    const delta = clock.getDelta();
 
-    // Render
-    renderer.render(scene, camera)
+    mixer.update( delta );
 
-    // Call tick again on the next frame
-    window.requestAnimationFrame(tick)
+    renderer.render( scene, camera );
+
 }
-
-tick()
