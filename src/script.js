@@ -4,6 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
+
 // Debug
 const gui = new dat.GUI()
 
@@ -32,6 +33,20 @@ loader.load(
         scene.add( gltf.scene );
         mixer = new THREE.AnimationMixer(gltf.scene)
         mixer.clipAction((gltf).animations[0]).play()
+        animate()
+	},
+	( xhr ) => { console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
+	( error ) => { console.log( 'An error happened' ); }
+);
+loader.load(
+	'models/astronaut.gltf',
+	(gltf) => {
+        gltf.scene.translateX(-2);
+        gltf.scene.translateZ(-2);
+        gltf.scene.rotateY(1);
+        scene.add( gltf.scene );
+        mixer = new THREE.AnimationMixer(gltf.scene)
+        mixer.clipAction((gltf).animations[1]).play()
         animate()
 	},
 	( xhr ) => { console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
@@ -95,6 +110,24 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
  */
 
 const clock = new THREE.Clock()
+
+
+/**
+ * Audio
+ */
+
+// create a global audio source
+const listener = new THREE.AudioListener();
+const audio = new THREE.Audio( listener );
+const loaderAudio = new THREE.AudioLoader();
+
+loaderAudio.load( './likeyou.mp3', function( buffer ) {
+	audio.setBuffer( buffer );
+	audio.setLoop( true );
+	audio.setVolume( 1 );
+	audio.play();
+});
+
 
 function animate() {
 
