@@ -4,7 +4,6 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-
 // Debug
 const gui = new dat.GUI()
 
@@ -61,7 +60,7 @@ loader.load(
 loader.load(
 	'models/singe1.gltf',
 	(gltf) => {
-        gltf.scene.translateX(-8.3);
+        gltf.scene.translateX(-8);
         gltf.scene.translateZ(0);
         gltf.scene.rotateY(1.5);
         gltf.scene.scale.set(0.3,0.3,0.3)
@@ -136,9 +135,9 @@ camera.add( listener );
 const audio = new THREE.Audio( listener );
 const loaderAudio = new THREE.AudioLoader();
 
-loaderAudio.load('audio/likeyou.ogg', function( buffer ) {
+loaderAudio.load('audio/musique.ogg', function( buffer ) {
 	audio.setBuffer( buffer );
-	audio.setLoop( true );
+    audio.setLoop(true);
 	audio.setVolume( 1 );
 	audio.play();
 });
