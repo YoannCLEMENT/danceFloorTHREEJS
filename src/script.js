@@ -15,6 +15,7 @@ const canvas = document.querySelector('canvas.webgl')
 const scene = new THREE.Scene()
 
 let mixer = new THREE.AnimationMixer();
+let mixer1 = new THREE.AnimationMixer();
 
 // GLTFLoader
 const loader = new GLTFLoader();
@@ -48,9 +49,9 @@ loader.load(
         gltf.scene.translateZ(-2);
         gltf.scene.rotateY(1);
         scene.add( gltf.scene );
-        mixer = new THREE.AnimationMixer(gltf.scene)
-        mixer.clipAction((gltf).animations[1]).play()
-        animate()
+        mixer1 = new THREE.AnimationMixer(gltf.scene)
+        mixer1.clipAction((gltf).animations[0]).play()
+        animate1()
 	},
 	( xhr ) => { console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
 	( error ) => { console.log( 'An error happened' ); }
@@ -138,6 +139,20 @@ function animate() {
     const delta = clock.getDelta();
 
     mixer.update( delta );
+
+    renderer.render( scene, camera );
+
+}
+
+const clock1 = new THREE.Clock()
+
+function animate1() {
+
+    requestAnimationFrame( animate1 );
+
+    const delta = clock1.getDelta();
+
+    mixer1.update( delta );
 
     renderer.render( scene, camera );
 
