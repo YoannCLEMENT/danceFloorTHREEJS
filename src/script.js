@@ -16,6 +16,8 @@ const scene = new THREE.Scene()
 
 let mixer = new THREE.AnimationMixer();
 let mixer1 = new THREE.AnimationMixer();
+let mixer2 = new THREE.AnimationMixer();
+
 
 // GLTFLoader
 const loader = new GLTFLoader();
@@ -52,6 +54,21 @@ loader.load(
         mixer1 = new THREE.AnimationMixer(gltf.scene)
         mixer1.clipAction((gltf).animations[0]).play()
         animate1()
+	},
+	( xhr ) => { console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
+	( error ) => { console.log( 'An error happened' ); }
+);
+loader.load(
+	'models/singe1.gltf',
+	(gltf) => {
+        gltf.scene.translateX(-8.3);
+        gltf.scene.translateZ(0);
+        gltf.scene.rotateY(1.5);
+        gltf.scene.scale.set(0.3,0.3,0.3)
+        scene.add( gltf.scene );
+        mixer2 = new THREE.AnimationMixer(gltf.scene)
+        mixer2.clipAction((gltf).animations[0]).play()
+        animate2()
 	},
 	( xhr ) => { console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
 	( error ) => { console.log( 'An error happened' ); }
@@ -153,6 +170,20 @@ function animate1() {
     const delta = clock1.getDelta();
 
     mixer1.update( delta );
+
+    renderer.render( scene, camera );
+
+}
+
+const clock2 = new THREE.Clock()
+
+function animate2() {
+
+    requestAnimationFrame( animate2 );
+
+    const delta = clock2.getDelta();
+
+    mixer2.update( delta );
 
     renderer.render( scene, camera );
 
