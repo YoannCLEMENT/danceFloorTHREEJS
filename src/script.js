@@ -30,6 +30,9 @@ loader.load(
 loader.load(
 	'models/danceur.gltf',
 	(gltf) => {
+	gltf.scene.translateX(-2);
+        gltf.scene.translateZ(1);
+        gltf.scene.rotateY(0.8);
         scene.add( gltf.scene );
         mixer = new THREE.AnimationMixer(gltf.scene)
         mixer.clipAction((gltf).animations[0]).play()
@@ -89,7 +92,7 @@ window.addEventListener('resize', () =>
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
 camera.position.x = 6
 camera.position.y = 2
-camera.position.z = 2
+camera.position.z = 1
 scene.add(camera)
 
 // Controls
@@ -106,28 +109,27 @@ renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 /**
- * Animate
- */
-
-const clock = new THREE.Clock()
-
-
-/**
  * Audio
  */
 
 // create a global audio source
 const listener = new THREE.AudioListener();
+camera.add( listener );
 const audio = new THREE.Audio( listener );
 const loaderAudio = new THREE.AudioLoader();
 
-loaderAudio.load( './likeyou.mp3', function( buffer ) {
+loaderAudio.load( 'likeyou.mp3', function( buffer ) {
 	audio.setBuffer( buffer );
 	audio.setLoop( true );
 	audio.setVolume( 1 );
 	audio.play();
 });
 
+/**
+ * Animate
+ */
+
+const clock = new THREE.Clock()
 
 function animate() {
 
