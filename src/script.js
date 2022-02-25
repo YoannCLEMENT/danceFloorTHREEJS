@@ -136,7 +136,7 @@ camera.add( listener );
 const audio = new THREE.Audio( listener );
 const loaderAudio = new THREE.AudioLoader();
 
-loaderAudio.load( 'audio/likeyou.ogg', function( buffer ) {
+loaderAudio.load('audio/likeyou.ogg', function( buffer ) {
 	audio.setBuffer( buffer );
 	audio.setLoop( true );
 	audio.setVolume( 1 );
