@@ -3,9 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ThreeJS Starter</title>
+    <title>Dance Floor</title>
+    <style>
+        #overlay {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+    </style>
 </head>
 <body>
     <canvas class="webgl"></canvas>
+    <div id="overlay">
+        <button id="startButton">Play</button>
+    </div>
 </body>
 </html>
